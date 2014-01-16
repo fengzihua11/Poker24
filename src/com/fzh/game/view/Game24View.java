@@ -217,7 +217,7 @@ public class Game24View extends View {
 		// 画局数计数器
 		for (int i = 0; i < cicer.length; i++) {
 			cicer[i] = new CiclerDrawable(Color.BLACK, CIRCLE_RADIAUS, i + 1,
-					circleLRpadding * (i + 1) + 35 * i + CIRCLE_RADIAUS,
+					circleLRpadding * (i + 1) + 50 * i + CIRCLE_RADIAUS,
 					mHeight - 600);
 		}
 	}
@@ -384,9 +384,9 @@ public class Game24View extends View {
 			} else if (clickDownSignRect(pointX, pointY)) {
 				calendResult();
 				invalidate();
-			} else if (clickDownFunctionRect(pointX, pointY)) {
+			}/* else if (clickDownFunctionRect(pointX, pointY)) {
 				invalidate();
-			}
+			}*/
 			break;
 
 		case MotionEvent.ACTION_MOVE:
@@ -404,10 +404,10 @@ public class Game24View extends View {
 
 			if (srcIndex > CardBean.NO_ID && srcIndex < beans.length) {
 				endDrag(pointX, pointY);
-			} else if (clickShowAnswerRect(pointX, pointY)) {
+			}/* else if (clickShowAnswerRect(pointX, pointY)) {
 				if (rectListener != null)
 					rectListener.onRectClick(SHOW_ANSWER);
-			}
+			}*/
 			invalidate();
 			break;
 		}

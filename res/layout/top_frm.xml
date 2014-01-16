@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ImageView
+        android:id="@+id/appIcon"
+        android:layout_width="38dip"
+        android:layout_height="38dip"
+	    android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dip"
+        android:src="@drawable/icon" />
+
+    <TextView
+        android:id="@+id/appTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="38dip"
+	    android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/appIcon"
+        android:layout_marginLeft="5dip"
+        android:gravity="center_vertical"
+        android:text="@string/app_name"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+    
+    <ImageView
+        android:id="@+id/getScore"
+        android:layout_width="wrap_content"
+        android:layout_height="38dip"
+	    android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/moreSetting"
+        android:layout_marginRight="20dip"
+        android:gravity="center"
+        android:src="@drawable/ic_tab_switch"/>
+    
+    <ImageView
+        android:id="@+id/moreSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="38dip"
+	    android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dip"
+        android:gravity="center"
+        android:src="@drawable/ic_tab_more"/>
+
+</merge>

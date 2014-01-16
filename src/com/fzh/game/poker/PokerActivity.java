@@ -1,3 +1,4 @@
+
 package com.fzh.game.poker;
 
 import cn.domob.data.OErrorInfo;
@@ -6,10 +7,14 @@ import cn.domob.data.OManager.AddVideoWallListener;
 import cn.domob.data.OManager.AddWallListener;
 import cn.domob.data.OManager.ConsumeListener;
 import cn.domob.data.OManager.ConsumeStatus;
+
 import com.fzh.game.tool.UtilTool;
 import com.fzh.game.view.Game24AnswerView;
 import com.fzh.game.view.Game24View;
+import com.fzh.game.view.GameBottomFrm;
+import com.fzh.game.view.GameTopFrm;
 import com.fzh.game.view.Game24View.OnRectClickListener;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -26,18 +31,20 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class PokerActivity extends Activity implements OnRectClickListener {
+public class PokerActivity extends Activity implements OnRectClickListener, OnClickListener {
 
     public static final String XMLNAME = "showdialog";
     public static final String AD_KEY = "showad";
 
     private static final String DOMOB_PUBLISHER_ID = "96ZJ2JPAzenx/wTAPo";
-    private static final String DOMOB_USER_ID      = "fengzihua22@gmail.com";
+    private static final String DOMOB_USER_ID = "fengzihua22@gmail.com";
 
     private Game24View gameView;
     private Game24AnswerView answerView;
@@ -48,15 +55,18 @@ public class PokerActivity extends Activity implements OnRectClickListener {
 
     private DisplayMetrics mDisplay;
 
+    private GameBottomFrm mBottomFrm;
+    private GameTopFrm mTopFrm;
+
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         getDisplay();
-        
-        View main = LayoutInflater.from(this).inflate(R.layout.main, null);  
+
+        View main = LayoutInflater.from(this).inflate(R.layout.main, null);
         main.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         setContentView(main);
-        
+
         inflaterView();
 
         initDomobofferWallManager();
@@ -65,7 +75,7 @@ public class PokerActivity extends Activity implements OnRectClickListener {
          * if (getInt(1) == 1) openAdTip();
          */
     }
-    
+
     /**
      * 初始化多盟积分墙
      */
@@ -93,7 +103,7 @@ public class PokerActivity extends Activity implements OnRectClickListener {
         };
         // 打开积分墙
         mDomobOfferWallManager.setAddWallListener(mAddWallListener);
-        
+
         mConsumeListener = new OManager.ConsumeListener() {
             @Override
             public void onConsumeFailed(
@@ -131,6 +141,13 @@ public class PokerActivity extends Activity implements OnRectClickListener {
     }
 
     private void inflaterView() {
+
+        mTopFrm = (GameTopFrm) findViewById(R.id.topFrm);
+        mTopFrm.setOnClickListener(this);
+
+        mBottomFrm = (GameBottomFrm) findViewById(R.id.bottomFrm);
+        mBottomFrm.setOnClickListener(this);
+
         gameView = (Game24View) findViewById(R.id.gameView);
         gameView.setOnRectClickListener(this);
         answerView = (Game24AnswerView) findViewById(R.id.answerView);
@@ -326,11 +343,11 @@ public class PokerActivity extends Activity implements OnRectClickListener {
             case R.id.pre_menu:
                 gameView.clickDownFunctionRect(Game24View.PRE_GAME);
                 break;
-                
+
             case R.id.reset_menu:
                 gameView.clickDownFunctionRect(Game24View.RESET_GAME);
                 break;
-                
+
             case R.id.next_menu:
                 gameView.clickDownFunctionRect(Game24View.NEXT_GAME);
                 break;
@@ -354,7 +371,43 @@ public class PokerActivity extends Activity implements OnRectClickListener {
         }
         return true;
     }
-    
+
+    @Override
+    public void onClick(View v) {
+        if (answerView.isShown()) {
+            answerView.setVisibility(View.GONE);
+            gameView.setTouchable(true);
+            return;
+        }
+
+        switch (v.getId()) {
+            case R.id.exitApp:
+                showCloseAppDailog();
+                break;
+            case R.id.preQuestion:
+                gameView.clickDownFunctionRect(Game24View.PRE_GAME);
+                break;
+            case R.id.nextQuestion:
+                gameView.clickDownFunctionRect(Game24View.NEXT_GAME);
+                break;
+            case R.id.resetQuestion:
+                gameView.clickDownFunctionRect(Game24View.RESET_GAME);
+                break;
+            case R.id.answer:
+                answerView.setVisibility(View.VISIBLE);
+                answerView.setPicIds(gameView.getPic());
+                gameView.setTouchable(false);
+                break;
+                
+            case R.id.moreSetting:
+                break;
+            case R.id.getScore:
+                mDomobOfferWallManager.loadOfferWall();
+                break;
+        }
+
+    }
+
     public void showToast(final String content) {
         runOnUiThread(new Runnable() {
             @Override

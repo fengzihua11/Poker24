@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/exitApp"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:src="@drawable/exit_2" />
+
+    <ImageView
+        android:id="@+id/preQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:src="@drawable/pre_0" />
+
+    <ImageView
+        android:id="@+id/resetQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:src="@drawable/reset_0" />
+
+    <ImageView
+        android:id="@+id/nextQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:src="@drawable/next_0" />
+
+    <ImageView
+        android:id="@+id/answer"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:src="@drawable/answer_0" />
+
+</merge>

@@ -131,7 +131,7 @@ public class Game24SurfaceView extends SurfaceView implements SurfaceHolder.Call
 		if (ISLOG)
 			Log.d(TAG, "drawBackground()");
 		Bitmap bitmap = ((BitmapDrawable) getContext().getResources()
-				.getDrawable(R.drawable.desk_bg)).getBitmap();
+				.getDrawable(R.drawable.chat_userinfo_popup_bg)).getBitmap();
 		canvas.drawBitmap(bitmap, 0, 0, mPaint);
 	}
 
