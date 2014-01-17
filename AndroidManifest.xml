@@ -29,7 +29,7 @@
         android:icon="@drawable/icon"
         android:label="@string/app_name" >
         <activity
-            android:name=".PokerActivity"
+            android:name=".MainPokerActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/PokerTheme"
@@ -41,6 +41,30 @@
             </intent-filter>
         </activity>
         <activity android:name="cn.o.download.OActivity”" />
+        
+        <!-- 显示应用列表和详细信息(必须) -->
+        <activity android:name="net.miidiwall.SDK.MyWallActivity" 
+            android:theme="@style/PokerTheme"
+            android:screenOrientation="portrait"
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:configChanges="keyboardHidden|orientation" />    
+        
+        <!-- 显示应用列表和详细信息(必须) -->          
+        <activity android:name=".a" android:configChanges="keyboardHidden|orientation" />
+        
+        <!-- 广告服务(必须)  -->        
+        <service android:name=".b" />
+        
+        <!-- 广告计费(必须)  --> 
+        <receiver android:name=".c">
+			<intent-filter>
+				<action android:name="android.intent.action.PACKAGE_ADDED" />
+				<data android:scheme="package" />
+			</intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+		</receiver>
     </application>
 
 </manifest>

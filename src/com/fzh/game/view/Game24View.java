@@ -1,22 +1,18 @@
 package com.fzh.game.view;
 
 import java.util.ArrayList;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
-
 import com.fzh.game.bean.CardBean;
 import com.fzh.game.bean.CardBean.CardType;
 import com.fzh.game.constant.Flagconstant;
@@ -44,8 +40,8 @@ public class Game24View extends View {
 	public static int POKE_WIDTH = 200;
 	public static int POKE_HEIGHT = 300;
 	
-	private static final int SIGN_WIDTH = 90;
-	private static final int SIGN_HEIGHT = 90;
+	private static final int SIGN_WIDTH = 80;
+	private static final int SIGN_HEIGHT = 80;
 	private static final int BTN_WIDTH = 150;
 	private static final int BTN_HEIGHT = 150;
 	private static final int CIRCLE_RADIAUS = 26;
@@ -126,7 +122,6 @@ public class Game24View extends View {
 		flushAllRect();
 		if (numbers == null)
 			numbers = new int[4];
-		// ��ʼ���������������Ŀ��
 		for (int i = 0; i < 4; i++) {
 			numbers[i] = nums[i];
 			beans[i].setEmpty(false, new CardDrawable(getContext(),
@@ -163,23 +158,25 @@ public class Game24View extends View {
 					+ (SIGN_WIDTH + calendLRpadding * 2) * i, mHeight - 120);
 		}
 
+		// 画底部运算符号
 		beans[7] = new CardBean(new CardDrawable(getContext(), R.drawable.add));
 		beans[7].canMove = false;
 		beans[7].isEmpty = false;
 		beans[7].type = CardType.PLUG;
 		beans[7].mValue = 0;
 		beans[7].rect = new Rect(calendLRpadding * 2 + POKE_WIDTH,
-				mHeight - 220, calendLRpadding * 2 + POKE_WIDTH + SIGN_WIDTH,
-				mHeight - 175);
+		        mHeight - 210 - SIGN_HEIGHT, calendLRpadding * 2 + POKE_WIDTH + SIGN_WIDTH,
+				mHeight - 210);
 
+		// 画等于号
 		beans[8] = new CardBean(
 				new CardDrawable(getContext(), R.drawable.equal));
 		beans[8].canMove = false;
 		beans[8].isEmpty = false;
 		beans[8].type = CardType.EQUAL;
-		beans[8].rect = new Rect(calendLRpadding * 4 + POKE_WIDTH * 2
-				+ SIGN_WIDTH, mHeight - 220, calendLRpadding * 4 + POKE_WIDTH
-				* 2 + SIGN_WIDTH * 2, mHeight - 175);
+		beans[8].rect = new Rect(calendLRpadding * 4 + POKE_WIDTH * 2 + SIGN_WIDTH, 
+		        mHeight - 210 - SIGN_HEIGHT, calendLRpadding * 4 + POKE_WIDTH * 2 + SIGN_WIDTH * 2, 
+				mHeight - 210);
 
 		// 画运算符号, 4个
 		for (int i = 0; i < 4; i++) {

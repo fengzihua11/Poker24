@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/makeQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="48dip"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        android:text="@string/make_question_demo"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="@drawable/mz_btn_default" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dip"
+        android:background="@drawable/mz_popup_divider_light" />
+
+    <TextView
+        android:id="@+id/testOther"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="48dip"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        android:text="@string/test_other_people"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="@drawable/mz_btn_default" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dip"
+        android:background="@drawable/mz_popup_divider_light" />
+
+    <TextView
+        android:id="@+id/descriptionGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="48dip"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        android:text="@string/game_description_icon"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="@drawable/mz_btn_default" />
+
+</LinearLayout>

@@ -41,4 +41,8 @@ public class GameTopFrm extends RelativeLayout {
         mGetScore.setOnClickListener(l);
         mMoreSetting.setOnClickListener(l);
     }
+    
+    public View getAnchorView() {
+        return mMoreSetting;
+    }
 }

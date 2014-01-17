@@ -36,6 +36,7 @@ public class GameBottomFrm extends LinearLayout {
         resetQuestion = (ImageView) findViewById(R.id.resetQuestion);
         nextQuestion = (ImageView) findViewById(R.id.nextQuestion);
         answer = (ImageView) findViewById(R.id.answer);
+        answer.setVisibility(View.GONE);
     }
     
     public void setOnClickListener(OnClickListener l) {

@@ -1,19 +1,19 @@
 
 package com.fzh.game.poker;
 
-import cn.domob.data.OErrorInfo;
-import cn.domob.data.OManager;
-import cn.domob.data.OManager.AddVideoWallListener;
-import cn.domob.data.OManager.AddWallListener;
-import cn.domob.data.OManager.ConsumeListener;
-import cn.domob.data.OManager.ConsumeStatus;
-
 import com.fzh.game.tool.UtilTool;
 import com.fzh.game.view.Game24AnswerView;
 import com.fzh.game.view.Game24View;
 import com.fzh.game.view.GameBottomFrm;
+import com.fzh.game.view.GameMenuPopup;
 import com.fzh.game.view.GameTopFrm;
 import com.fzh.game.view.Game24View.OnRectClickListener;
+
+
+
+//import net.miidipush.SDK.SDKConnector;
+import net.miidiwall.SDK.AdWall;
+import net.miidiwall.SDK.IAdWallShowAppsNotifier;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,42 +23,41 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class PokerActivity extends Activity implements OnRectClickListener, OnClickListener {
+public class MainPokerActivity extends Activity implements OnRectClickListener, OnClickListener, IAdWallShowAppsNotifier {
 
     public static final String XMLNAME = "showdialog";
     public static final String AD_KEY = "showad";
 
-    private static final String DOMOB_PUBLISHER_ID = "96ZJ2JPAzenx/wTAPo";
-    private static final String DOMOB_USER_ID = "fengzihua22@gmail.com";
+    private static final String MIIDI_PUBLISHER_ID = "16764";//"6"
+    private static final String MIIDI_APP_PASSWORD = "4f0wz1sq9vhi2cq1";//"6666666666666666"
 
     private Game24View gameView;
     private Game24AnswerView answerView;
-    // domob offerwall manager
-    private OManager mDomobOfferWallManager;
-    private AddWallListener mAddWallListener;
-    private ConsumeListener mConsumeListener;
 
     private DisplayMetrics mDisplay;
 
     private GameBottomFrm mBottomFrm;
     private GameTopFrm mTopFrm;
+    
+    // 多个收件人时弹出收件人列表
+    GameMenuPopup mGameMenuPopup;
+    
+    public static boolean mIsMeizu = false;
 
     public void onCreate(Bundle savedInstanceState) {
+        isMeizuProduct();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         getDisplay();
@@ -75,63 +74,27 @@ public class PokerActivity extends Activity implements OnRectClickListener, OnCl
          * if (getInt(1) == 1) openAdTip();
          */
     }
+    
+    private final void isMeizuProduct() {
+        if(Build.DEVICE.equals("mx3") || Build.DEVICE.equals("mx2")) {
+            mIsMeizu = true;
+        }
+        mIsMeizu = false;
+    }
 
     /**
-     * 初始化多盟积分墙
+     * 初始化
      */
     private final void initDomobofferWallManager() {
-        mDomobOfferWallManager = new OManager(this, DOMOB_PUBLISHER_ID, DOMOB_USER_ID);
-
-        mAddWallListener = new OManager.AddWallListener() {
-
-            @Override
-            public void onAddWallFailed(
-                    OErrorInfo mDomobOfferWallErrorInfo) {
-
-                showToast(mDomobOfferWallErrorInfo.toString());
-            }
-
-            @Override
-            public void onAddWallClose() {
-                // 此处可以设置为横屏...
-            }
-
-            @Override
-            public void onAddWallSucess() {
-
-            }
-        };
-        // 打开积分墙
-        mDomobOfferWallManager.setAddWallListener(mAddWallListener);
-
-        mConsumeListener = new OManager.ConsumeListener() {
-            @Override
-            public void onConsumeFailed(
-                    final OErrorInfo mDomobOfferWallErrorInfo) {
-                showToast(mDomobOfferWallErrorInfo.toString());
-            }
-
-            @Override
-            public void onConsumeSucess(final int point, final int consumed,
-                    final ConsumeStatus cs) {
-                switch (cs) {
-                    case SUCCEED:
-                        showToast("消费成功:" + "总积分：" + point + "总消费积分：" + consumed);
-                        break;
-                    case OUT_OF_POINT:
-                        showToast("总积分不足，消费失败：" + "总积分：" + point + "总消费积分：" + consumed);
-                        break;
-                    case ORDER_REPEAT:
-                        showToast("订单号重复，消费失败：" + "总积分：" + point + "总消费积分：" + consumed);
-                        break;
-
-                    default:
-                        showToast("未知错误");
-                        break;
-                }
-            }
-        };
-        mDomobOfferWallManager.setConsumeListener(mConsumeListener);
+        // 设置应用的开发者帐号信息，appId和appPassword是在米迪广告平台网站上，注册后会提交应用后，网站提供的信息
+        PokerActivity.set(this, MIIDI_PUBLISHER_ID, MIIDI_APP_PASSWORD);
+        //PokerActivity.setIcon(R.drawable.icon);
+        //SDKConnector.getInstance(this).setAppId(MIIDI_PUBLISHER_ID, MIIDI_APP_PASSWORD);
+        // 设置push广告的显示icon
+        //SDKConnector.getInstance(this).setIconId(R.drawable.answer_0);
+        
+        // 积分墙
+        AdWall.init(this, MIIDI_PUBLISHER_ID, MIIDI_APP_PASSWORD);
     }
 
     private void getDisplay() {
@@ -151,7 +114,9 @@ public class PokerActivity extends Activity implements OnRectClickListener, OnCl
         gameView = (Game24View) findViewById(R.id.gameView);
         gameView.setOnRectClickListener(this);
         answerView = (Game24AnswerView) findViewById(R.id.answerView);
-        answerView.setOnRectClickListener(this);
+        answerView.setOnRectClickListener(this);        
+
+        mGameMenuPopup = new GameMenuPopup(this, mTopFrm.getAnchorView(), this);
     }
 
     public void pushInt(int value) {
@@ -206,7 +171,11 @@ public class PokerActivity extends Activity implements OnRectClickListener, OnCl
                 gameView.setTouchable(true);
                 return true;
             } else {
-                showCloseAppDailog();
+                // 移到后台
+                boolean ret = moveTaskToBack(false);
+                if (!ret) {
+                    showCloseAppDailog();
+                }
                 return true;
             }
         }
@@ -228,6 +197,25 @@ public class PokerActivity extends Activity implements OnRectClickListener, OnCl
     }
 
     protected void showGameAgaimDailog() {
+        AlertDialog dialog = new AlertDialog.Builder(this).setIcon(
+                R.drawable.icon).setTitle(R.string.game_over_title_tip)
+                .setPositiveButton(R.string.game_over_yes,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                    int which) {
+                                finish();
+                            }
+                        }).setNegativeButton(R.string.game_over_again,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                    int which) {
+                                gameView.again();
+                            }
+                        }).create();
+        dialog.show();
+    }
+    
+    protected void showMenuPopup() {
         AlertDialog dialog = new AlertDialog.Builder(this).setIcon(
                 R.drawable.icon).setTitle(R.string.game_over_title_tip)
                 .setPositiveButton(R.string.game_over_yes,
@@ -333,45 +321,6 @@ public class PokerActivity extends Activity implements OnRectClickListener, OnCl
         Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_screen_menu, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.pre_menu:
-                gameView.clickDownFunctionRect(Game24View.PRE_GAME);
-                break;
-
-            case R.id.reset_menu:
-                gameView.clickDownFunctionRect(Game24View.RESET_GAME);
-                break;
-
-            case R.id.next_menu:
-                gameView.clickDownFunctionRect(Game24View.NEXT_GAME);
-                break;
-
-            case R.id.game_description:
-                openGameDescription();
-                break;
-            case R.id.test_other:
-                getHelpBySms();
-                break;
-            case R.id.make_question:
-                makeQuestionDailog();
-                break;
-
-            case R.id.get_score:
-                mDomobOfferWallManager.loadOfferWall();
-                break;
-            case R.id.use_score:
-                mDomobOfferWallManager.consumePoints(10);
-                break;
-        }
-        return true;
-    }
-
     @Override
     public void onClick(View v) {
         if (answerView.isShown()) {
@@ -381,6 +330,19 @@ public class PokerActivity extends Activity implements OnRectClickListener, OnCl
         }
 
         switch (v.getId()) {
+            case R.id.makeQuestion:
+                makeQuestionDailog();
+                mGameMenuPopup.dismiss();
+                break;
+            case R.id.testOther:
+                getHelpBySms();
+                mGameMenuPopup.dismiss();
+                break;
+            case R.id.descriptionGame:
+                openGameDescription();
+                mGameMenuPopup.dismiss();
+                break;
+            
             case R.id.exitApp:
                 showCloseAppDailog();
                 break;
@@ -400,19 +362,27 @@ public class PokerActivity extends Activity implements OnRectClickListener, OnCl
                 break;
                 
             case R.id.moreSetting:
+                mGameMenuPopup.show();
                 break;
+                
             case R.id.getScore:
-                mDomobOfferWallManager.loadOfferWall();
+                // 打开积分墙
+                AdWall.showAppOffers(MainPokerActivity.this);
+                /*if(mIsMeizu) {
+                    overridePendingTransition(R.anim.mz_activity_to_next_open_enter, R.anim.mz_activity_to_next_open_exit);
+                }*/
+                // 推送广告[API方式]
+                //SDKConnector.getInstance(PokerActivity.this).PushByAPI();
+                //PokerActivity.get();
                 break;
         }
-
     }
 
     public void showToast(final String content) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(PokerActivity.this, content, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainPokerActivity.this, content, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -420,6 +390,17 @@ public class PokerActivity extends Activity implements OnRectClickListener, OnCl
     protected void onDestroy() {
         super.onDestroy();
     }
+    // ////////================积分墙打开回调====================//////////////
 
-    // ////////================广告位回调====================//////////////
+    @Override
+    public void onShowApps() {
+        //Toast.makeText(this, "开始显示积分墙的Activity", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDismissApps() {
+       //Toast.makeText(this, "关闭积分墙的Activity", Toast.LENGTH_SHORT).show();
+    }
+    
+    //==================================
 }
