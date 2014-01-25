@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2011 Google Inc.
+All Rights Reserved. -->
+<resources>
+    <dimen name="config_prefDialogWidth">320dp</dimen>
+    <dimen name="mz_action_button_min_height">48dip</dimen>
+    <dimen name="top_height">48dip</dimen>
+    <dimen name="bottom_height">52dip</dimen>
+    <dimen name="more_menu_width">240dip</dimen>
+    <dimen name="more_menu_offy">8dip</dimen>
+</resources>
