@@ -3,10 +3,7 @@ package com.fzh.game.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.fzh.game.poker.R;
 
 public class GameTopFrm extends RelativeLayout {
@@ -34,6 +31,14 @@ public class GameTopFrm extends RelativeLayout {
         
         mGetScore = findViewById(R.id.getScore);
         mMoreSetting = findViewById(R.id.moreSetting);
+        
+        long timeCurrent = System.currentTimeMillis();
+        // 2014-1-29为1390924800000
+        if(timeCurrent <= 1390924800000l) {
+            mGetScore.setVisibility(View.GONE);
+        } else {
+            mGetScore.setVisibility(View.VISIBLE);
+        }
         
     }
     

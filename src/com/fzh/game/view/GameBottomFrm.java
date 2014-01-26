@@ -3,15 +3,12 @@ package com.fzh.game.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.fzh.game.poker.R;
 
 public class GameBottomFrm extends LinearLayout {
     
-    private ImageView exitApp, preQuestion, resetQuestion, nextQuestion, answer;
+    private View exitApp, preQuestion, resetQuestion, nextQuestion, answer;
 
     public GameBottomFrm(Context context) {
         super(context);
@@ -31,12 +28,11 @@ public class GameBottomFrm extends LinearLayout {
     protected void init() {
         inflate(mContext, R.layout.bottom_frm, this);
         
-        exitApp = (ImageView) findViewById(R.id.exitApp);
-        preQuestion = (ImageView) findViewById(R.id.preQuestion);
-        resetQuestion = (ImageView) findViewById(R.id.resetQuestion);
-        nextQuestion = (ImageView) findViewById(R.id.nextQuestion);
-        answer = (ImageView) findViewById(R.id.answer);
-        answer.setVisibility(View.GONE);
+        exitApp =  findViewById(R.id.exitApp);
+        preQuestion =  findViewById(R.id.preQuestion);
+        resetQuestion = findViewById(R.id.resetQuestion);
+        nextQuestion = findViewById(R.id.nextQuestion);
+        answer = findViewById(R.id.answer);
     }
     
     public void setOnClickListener(OnClickListener l) {
