@@ -1,44 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <ImageView
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:gamep="http://schemas.android.com/apk/res/com.fzh.game.poker">
+    
+    <com.fzh.game.view.GameMenuButton
         android:id="@+id/exitApp"
         android:layout_width="match_parent"
         android:layout_height="40dip"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:src="@drawable/exit_2" />
+        gamep:src="@drawable/exit_2"
+        gamep:text="@string/exit_app_label" />
 
-    <ImageView
+    <com.fzh.game.view.GameMenuButton
         android:id="@+id/preQuestion"
         android:layout_width="match_parent"
         android:layout_height="40dip"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:src="@drawable/pre_0" />
+        gamep:src="@drawable/pre_0"
+        gamep:text="@string/pre_question_label" />
 
-    <ImageView
+    <com.fzh.game.view.GameMenuButton
         android:id="@+id/resetQuestion"
         android:layout_width="match_parent"
         android:layout_height="40dip"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:src="@drawable/reset_0" />
+        gamep:src="@drawable/reset_0"
+        gamep:text="@string/reset_question_label" />
 
-    <ImageView
+    <com.fzh.game.view.GameMenuButton
         android:id="@+id/nextQuestion"
         android:layout_width="match_parent"
         android:layout_height="40dip"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:src="@drawable/next_0" />
+        gamep:src="@drawable/next_0"
+        gamep:text="@string/next_question_label" />
 
-    <ImageView
+    <com.fzh.game.view.GameMenuButton
         android:id="@+id/answer"
         android:layout_width="match_parent"
         android:layout_height="40dip"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:src="@drawable/answer_0" />
+        gamep:src="@drawable/answer_0"
+        gamep:text="@string/answer_question_label" />
 
 </merge>

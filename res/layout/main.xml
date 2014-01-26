@@ -1,40 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/prv/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/prv/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.fzh.game.view.GameTopFrm
-        android:id="@+id/topFrm"
-        android:layout_width="match_parent"
-        android:layout_height="48dip"
-        android:background="@drawable/btn_buy_r_pressed" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_weight="1.0"
-        android:background="@drawable/chat_userinfo_popup_bg"
+        android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <com.fzh.game.view.Game24View
-            android:id="@+id/gameView"
+        <com.fzh.game.view.GameTopFrm
+            android:id="@+id/topFrm"
             android:layout_width="match_parent"
-            android:layout_height="0dip"
-            android:layout_weight="1" />
+            android:layout_height="@dimen/top_height"
+            android:background="@drawable/btn_buy_r_pressed"
+            android:clipChildren="false"
+            android:clipToPadding="false" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_weight="1.0"
+            android:orientation="vertical" >
+
+            <com.fzh.game.view.Game24View
+                android:id="@+id/gameView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+            android:background="@drawable/question_bg"/>
+
+            <com.fzh.game.view.Game24AnswerView
+                android:id="@+id/answerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+            	android:background="@drawable/answer_bg"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <com.fzh.game.view.GameBottomFrm
+            android:id="@+id/bottomFrm"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottom_height"
+            android:background="@drawable/btn_buy_l_pressed"
+            android:clipChildren="false"
+            android:clipToPadding="false" />
     </LinearLayout>
 
-    <com.fzh.game.view.Game24AnswerView
-        android:id="@+id/answerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone" />
-
-    <com.fzh.game.view.GameBottomFrm
-        android:id="@+id/bottomFrm"
-        android:layout_width="match_parent"
-        android:layout_height="52dip"
-        android:background="@drawable/btn_buy_l_pressed" />
-</LinearLayout>
+</FrameLayout>

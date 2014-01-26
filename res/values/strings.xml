@@ -41,4 +41,13 @@ Q is 12, K on behalf of 13, I wish you good luck and support the development of 
 	<string name="get_score_menu_label">get score</string>
 	<string name="use_score_menu_label">use score</string>
 	<string name="reset_menu_label">reset game</string>
+	
+	<!-- 底部按钮和顶部按钮，长按提示 -->
+	<string name="exit_app_label">exit</string>
+	<string name="pre_question_label">pre-question</string>
+	<string name="reset_question_label">reset-question</string>
+	<string name="next_question_label">next-question</string>
+	<string name="answer_question_label">answer</string>
+	<string name="get_score_label">get score</string>
+	<string name="setting_label">more</string>
 </resources>

@@ -1,11 +1,9 @@
 package com.fzh.game.picture;
 
-import static com.fzh.game.view.Game24View.POKE_WIDTH;
-import static com.fzh.game.view.Game24View.POKE_HEIGHT;
-
+import static com.fzh.game.tool.RectTables.POKE_WIDTH;
+import static com.fzh.game.tool.RectTables.POKE_HEIGHT;
 import com.fzh.game.bean.CardBean;
 import com.fzh.game.view.Game24View;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

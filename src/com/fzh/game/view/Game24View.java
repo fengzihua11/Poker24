@@ -1,5 +1,6 @@
 package com.fzh.game.view;
 
+import static com.fzh.game.tool.RectTables.*;
 import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -36,16 +36,6 @@ public class Game24View extends View {
 	public static final int ISNULL_BEI = -30000;
 	public static final int CANNOT_DIV = -30001;
 
-	// 卡片宽度和高度(2:3)
-	public static int POKE_WIDTH = 200;
-	public static int POKE_HEIGHT = 300;
-	
-	private static final int SIGN_WIDTH = 80;
-	private static final int SIGN_HEIGHT = 80;
-	private static final int BTN_WIDTH = 150;
-	private static final int BTN_HEIGHT = 150;
-	private static final int CIRCLE_RADIAUS = 26;
-
 	private int mWidth = 0;
 	private int mHeight = 0;
 
@@ -56,7 +46,7 @@ public class Game24View extends View {
 
 	private volatile boolean isAnmation = false;
 
-	private CardBean[] beans = new CardBean[18];
+	private CardBean[] beans = new CardBean[13];
 	private CardBean moveBean = null;
 	private int srcIndex = -1;
 	private int desIndex = -1;
@@ -78,8 +68,6 @@ public class Game24View extends View {
 
 	private CiclerDrawable[] cicer = new CiclerDrawable[13];
 
-	//private Drawable backGround;
-
 	private PlayStatus playStatus = PlayStatus.WASH_MODE;
 
 	public void setTouchable(boolean flag) {
@@ -88,7 +76,6 @@ public class Game24View extends View {
 
 	public void again() {
 		flushAllRect();
-		// ϴ��
 		UtilTool.washPoke(pokes);
 		calentGameCards(0);
 		invalidate();
@@ -112,11 +99,6 @@ public class Game24View extends View {
 		return numbers;
 	}
 
-	/**
-	 * �������õ�ֵ
-	 * 
-	 * @param numbers
-	 */
 	public void setPics(int nums[]) {
 		playStatus = PlayStatus.QUESTION_MODE;
 		flushAllRect();
@@ -134,28 +116,24 @@ public class Game24View extends View {
 	 * 初始化数据
 	 */
 	private void initData() {
-		// 填充beans
-		int fourLRpadding = (mWidth - POKE_WIDTH * 4) / 5;
-		int calendLRpadding = (mWidth - POKE_WIDTH * 3 - SIGN_WIDTH * 2) / 6;
-		int btnLRpadding = (mWidth - BTN_WIDTH * 4) / 5;
-		int signLRpadding = (mWidth - SIGN_WIDTH * 4 - BTN_WIDTH - btnLRpadding * 2) / 5;
-		int circleLRpadding = (mWidth - CIRCLE_RADIAUS * 2 * 13) / 14;
-
-		// 顶部四个数字牌
+		// 填充beans, 顶部四个数字牌
 		for (int i = 0; i < 4; i++) {
 			beans[i] = new CardBean(blackDrawable);
-			beans[i].rect = new Rect(fourLRpadding * (i + 1) + POKE_WIDTH * i,
-					20, (fourLRpadding + POKE_WIDTH) * (i + 1),
-					20 + POKE_HEIGHT);
+			beans[i].rect = new Rect(
+			        QUESTION_VIEW_LEFT_BEGIN + UNIT_TOP_WIDTH + 2 * UNIT_TOP_WIDTH * i + POKE_WIDTH * i, 
+			        QUESTION_VIEW_TOP_BEGIN, 
+			        QUESTION_VIEW_LEFT_BEGIN + UNIT_TOP_WIDTH + 2 * UNIT_TOP_WIDTH * i + POKE_WIDTH * (i + 1),
+			        QUESTION_VIEW_TOP_BEGIN + POKE_HEIGHT);
 		}
 
 		// 底部三个数字牌
 		for (int i = 0; i < 3; i++) {
 			beans[i + 4] = new CardBean(blackDrawable);
-			beans[i + 4].rect = new Rect(calendLRpadding + POKE_WIDTH * i
-					+ (SIGN_WIDTH + calendLRpadding * 2) * i, mHeight - 120
-					- POKE_HEIGHT, calendLRpadding + POKE_WIDTH * (i + 1)
-					+ (SIGN_WIDTH + calendLRpadding * 2) * i, mHeight - 120);
+			beans[i + 4].rect = new Rect(
+			        QUESTION_VIEW_LEFT_BEGIN + UNIT_TOP_WIDTH + i * 2 * UNIT_CACULATE_WHITE_WIDTH + SIGN_WIDTH * i + POKE_WIDTH * i, 
+			        mHeight - CIRCLE_RADIAUS * 2 * 2 - QUESTION_VIEW_BOTTOM_END - POKE_HEIGHT,
+                    QUESTION_VIEW_LEFT_BEGIN + UNIT_TOP_WIDTH + i * 2 * UNIT_CACULATE_WHITE_WIDTH + SIGN_WIDTH * i + POKE_WIDTH * (i + 1),
+			        mHeight - CIRCLE_RADIAUS * 2 * 2 - QUESTION_VIEW_BOTTOM_END);
 		}
 
 		// 画底部运算符号
@@ -164,63 +142,46 @@ public class Game24View extends View {
 		beans[7].isEmpty = false;
 		beans[7].type = CardType.PLUG;
 		beans[7].mValue = 0;
-		beans[7].rect = new Rect(calendLRpadding * 2 + POKE_WIDTH,
-		        mHeight - 210 - SIGN_HEIGHT, calendLRpadding * 2 + POKE_WIDTH + SIGN_WIDTH,
-				mHeight - 210);
+		beans[7].rect = new Rect(
+		        QUESTION_VIEW_LEFT_BEGIN + UNIT_TOP_WIDTH + POKE_WIDTH + UNIT_CACULATE_WHITE_WIDTH,
+		        mHeight - CIRCLE_RADIAUS * 2 * 2 - QUESTION_VIEW_BOTTOM_END - ((POKE_HEIGHT - SIGN_HEIGHT + 1) / 2) - SIGN_HEIGHT,
+                QUESTION_VIEW_LEFT_BEGIN + UNIT_TOP_WIDTH + POKE_WIDTH + UNIT_CACULATE_WHITE_WIDTH + SIGN_WIDTH,
+                mHeight - CIRCLE_RADIAUS * 2 * 2 - QUESTION_VIEW_BOTTOM_END - ((POKE_HEIGHT - SIGN_HEIGHT + 1) / 2));
 
 		// 画等于号
-		beans[8] = new CardBean(
-				new CardDrawable(getContext(), R.drawable.equal));
+		beans[8] = new CardBean(new CardDrawable(getContext(), R.drawable.equal));
 		beans[8].canMove = false;
 		beans[8].isEmpty = false;
 		beans[8].type = CardType.EQUAL;
-		beans[8].rect = new Rect(calendLRpadding * 4 + POKE_WIDTH * 2 + SIGN_WIDTH, 
-		        mHeight - 210 - SIGN_HEIGHT, calendLRpadding * 4 + POKE_WIDTH * 2 + SIGN_WIDTH * 2, 
-				mHeight - 210);
+		beans[8].rect = new Rect(
+		        QUESTION_VIEW_LEFT_BEGIN + UNIT_TOP_WIDTH + POKE_WIDTH * 2 + UNIT_CACULATE_WHITE_WIDTH * 3 + SIGN_WIDTH,
+                mHeight - CIRCLE_RADIAUS * 2 * 2 - QUESTION_VIEW_BOTTOM_END - ((POKE_HEIGHT - SIGN_HEIGHT + 1) / 2) - SIGN_HEIGHT,
+                QUESTION_VIEW_LEFT_BEGIN + UNIT_TOP_WIDTH + POKE_WIDTH * 2 + UNIT_CACULATE_WHITE_WIDTH * 3 + SIGN_WIDTH * 2,
+                mHeight - CIRCLE_RADIAUS * 2 * 2 - QUESTION_VIEW_BOTTOM_END - ((POKE_HEIGHT - SIGN_HEIGHT + 1) / 2));
 
-		// 画运算符号, 4个
+		// 画四个可点击运算符号, 4个(9,10,11,12)
 		for (int i = 0; i < 4; i++) {
-			beans[i + 9] = new CardBean(new CardDrawable(getContext(),
-					Flagconstant.signIds[i]));
+			beans[i + 9] = new CardBean(new CardDrawable(getContext(),Flagconstant.signIds[i]));
 			beans[i + 9].canMove = false;
 			beans[i + 9].isEmpty = false;
 			beans[i + 9].type = CardType.BUTTON;
-			beans[i + 9].rect = new Rect(SIGN_WIDTH * i + signLRpadding
-					* (i + 1), mHeight - 300 - SIGN_HEIGHT, SIGN_WIDTH
-					* (i + 1) + signLRpadding * (i + 1), mHeight - 500);
+			beans[i + 9].rect = new Rect(
+	                QUESTION_VIEW_LEFT_BEGIN + (POKE_WIDTH + 1) / 2 + UNIT_CACULATE_SINGLE_WIDTH + UNIT_CACULATE_SINGLE_WIDTH * 2 * i +  SIGN_WIDTH * i,
+	                mHeight - CIRCLE_RADIAUS * 2 * 2 - POKE_HEIGHT - UNIT_CACULATE_SINGLE_WIDTH - SIGN_WIDTH - QUESTION_VIEW_BOTTOM_END,
+                    QUESTION_VIEW_LEFT_BEGIN + (POKE_WIDTH + 1) / 2 + UNIT_CACULATE_SINGLE_WIDTH + UNIT_CACULATE_SINGLE_WIDTH * 2 * i +  SIGN_WIDTH * (i + 1),
+                    mHeight - CIRCLE_RADIAUS * 2 * 2 - POKE_HEIGHT - UNIT_CACULATE_SINGLE_WIDTH - QUESTION_VIEW_BOTTOM_END);
 			beans[i + 9].mValue = i;
 		}
-
-		// 画上下，还原和退出按钮，新版本可能去掉, 4个
-		for (int i = 0; i < 4; i++) {
-			beans[i + 13] = new CardBean(new CardDrawable(getContext(),
-					Flagconstant.buttons[i]));
-			beans[i + 13].canMove = false;
-			beans[i + 13].isEmpty = false;
-			beans[i + 13].type = CardType.BUTTON;
-			beans[i + 13].rect = new Rect(BTN_WIDTH * i + btnLRpadding
-					* (i + 1), mHeight - 20 - BTN_HEIGHT, BTN_WIDTH * (i + 1)
-					+ btnLRpadding * (i + 1), mHeight - 20);
-		}
-
-		beans[17] = new CardBean(new CardDrawable(getContext(),
-				R.drawable.answer_0));
-		beans[17].canMove = false;
-		beans[17].isEmpty = false;
-		beans[17].type = CardType.BUTTON;
-		beans[17].rect = new Rect(mWidth - btnLRpadding - BTN_WIDTH,
-				mHeight - 375, mWidth - btnLRpadding, mHeight - 300);
 
 		// 画局数计数器
 		for (int i = 0; i < cicer.length; i++) {
 			cicer[i] = new CiclerDrawable(Color.BLACK, CIRCLE_RADIAUS, i + 1,
-					circleLRpadding * (i + 1) + 50 * i + CIRCLE_RADIAUS,
-					mHeight - 600);
+			        QUESTION_VIEW_LEFT_BEGIN + UNIT_CIRCLE_WIDTH + 2 * UNIT_CIRCLE_WIDTH * i + 2 * CIRCLE_RADIAUS * i + CIRCLE_RADIAUS,
+					mHeight - 2 * CIRCLE_RADIAUS - QUESTION_VIEW_BOTTOM_END);
 		}
 	}
 
 	private void resetGameCards() {
-		// ��ԭ������Ŀ��
 		if(playStatus == PlayStatus.WASH_MODE) {
 			if (picRes == null) {
 				numbers = null;
@@ -280,12 +241,6 @@ public class Game24View extends View {
 	public Game24View(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
-		DisplayMetrics display = getResources().getDisplayMetrics();
-		
-		POKE_WIDTH = (display.widthPixels - 280) / 4;
-		POKE_HEIGHT = (POKE_WIDTH * 3) / 2;
-		
-		//backGround = getContext().getResources().getDrawable(R.drawable.desk_bg);
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
 		for (int i = 0; i < Flagconstant.picIds.length; i++) {
@@ -305,13 +260,14 @@ public class Game24View extends View {
 		super.onSizeChanged(w, h, oldw, oldh);
 		mWidth = getWidth();
 		mHeight = getHeight();
-		//backGround.setBounds(0, 0, mWidth, mHeight);
+		if(rectListener != null) {
+		    rectListener.onSizeChanged(mHeight);
+		}
 		initData();
 		calentGameCards(0);
 	}
 
 	public void onDraw(Canvas canvas) {
-		//drawBackground(canvas);
 		drawCicler(canvas);
 	}
 
@@ -333,13 +289,8 @@ public class Game24View extends View {
 		}
 	}
 
-	/*private void drawBackground(Canvas canvas) {
-		if (backGround != null)
-			backGround.draw(canvas);
-	}*/
-
 	private void drawCards(Canvas canvas) {
-		for (int i = 0; i < beans.length - 5; i++) {
+		for (int i = 0; i < beans.length; i++) {
 			if (beans[i].dr != null)
 				beans[i].drawCard(canvas, mPaint);
 		}
@@ -393,18 +344,9 @@ public class Game24View extends View {
 			break;
 
 		default:
-			beans[13].dr = new CardDrawable(getContext(), R.drawable.pre_0);
-			beans[14].dr = new CardDrawable(getContext(), R.drawable.reset_0);
-			beans[15].dr = new CardDrawable(getContext(), R.drawable.exit_0);
-			beans[16].dr = new CardDrawable(getContext(), R.drawable.next_0);
-			beans[17].dr = new CardDrawable(getContext(), R.drawable.answer_0);
-
 			if (srcIndex > CardBean.NO_ID && srcIndex < beans.length) {
 				endDrag(pointX, pointY);
-			}/* else if (clickShowAnswerRect(pointX, pointY)) {
-				if (rectListener != null)
-					rectListener.onRectClick(SHOW_ANSWER);
-			}*/
+			}
 			invalidate();
 			break;
 		}
@@ -412,14 +354,14 @@ public class Game24View extends View {
 	}
 
 	private void flushAllRect() {
-		// ��ʼ���������������Ŀ��
+		// 还原顶部卡片状态
 		for (int i = 0; i < 4; i++) {
 			beans[i].mValue = CardBean.NO_ID;
 			beans[i].canMove = true;
 			beans[i].isEmpty = true;
 			beans[i].dr = blackDrawable;
 		}
-		// ��ʼ��������
+		// 还原底部三张卡片状态
 		for (int i = 0; i < 3; i++) {
 			beans[i + 4].mValue = CardBean.NO_ID;
 			beans[i + 4].canMove = true;
@@ -427,6 +369,7 @@ public class Game24View extends View {
 			beans[i + 4].dr = blackDrawable;
 		}
 
+		// 底部运算符号
 		beans[7].dr = new CardDrawable(getContext(), R.drawable.add);
 		beans[7].canMove = false;
 		beans[7].type = CardType.PLUG;
@@ -446,8 +389,6 @@ public class Game24View extends View {
     public final boolean clickDownFunctionRect(int event) {
         switch (event) {
             case PRE_GAME:
-                beans[13].setEmpty(false, new CardDrawable(getContext(),
-                        R.drawable.pre_1), beans[13].mValue);
                 if (beginGameTime - 4 >= 0) {
                     flushAllRect();
                     calentGameCards(beginGameTime - 4);
@@ -456,16 +397,12 @@ public class Game24View extends View {
                 break;
 
             case RESET_GAME:
-                beans[14].setEmpty(false, new CardDrawable(getContext(),
-                        R.drawable.reset_1), beans[14].mValue);
                 flushAllRect();
                 resetGameCards();
                 invalidate();
                 break;
                 
             case NEXT_GAME:
-                beans[16].setEmpty(false, new CardDrawable(getContext(),
-                        R.drawable.next_1), beans[16].mValue);
                 flushAllRect();
                 calentGameCards(beginGameTime + 4);
                 invalidate();
@@ -473,7 +410,6 @@ public class Game24View extends View {
                 
             case EXIT_GAME:
                 if (rectListener != null) {
-                    beans[15].dr = new CardDrawable(getContext(), R.drawable.exit_1);
                     invalidate();
                     rectListener.onRectClick(EXIT_GAME);
                 }
@@ -483,73 +419,14 @@ public class Game24View extends View {
     }
 
 	/**
-	 * 上一局，下一局，还原按钮处理事件
-	 * 
-	 * @param pointX
-	 * @param pointY
-	 * @return
-	 * @deprecated
-	 * @see #onTouchEvent(MotionEvent)
-	 */
-	private boolean clickDownFunctionRect(int pointX, int pointY) {
-		if (beans[14].isHint(pointX, pointY) && !beans[14].isEmpty) {
-			// 还原
-			beans[14].setEmpty(false, new CardDrawable(getContext(),
-					R.drawable.reset_1), beans[14].mValue);
-			flushAllRect();
-			resetGameCards();
-			return true;
-		} else if (beans[13].isHint(pointX, pointY) && !beans[13].isEmpty) {
-			// 上一题
-			beans[13].setEmpty(false, new CardDrawable(getContext(),
-					R.drawable.pre_1), beans[13].mValue);
-			if (beginGameTime - 4 >= 0) {
-				flushAllRect();
-				calentGameCards(beginGameTime - 4);
-			}
-			return true;
-		} else if (beans[16].isHint(pointX, pointY) && !beans[16].isEmpty) {
-			// 下一题
-			beans[16].setEmpty(false, new CardDrawable(getContext(),
-					R.drawable.next_1), beans[16].mValue);
-			flushAllRect();
-			calentGameCards(beginGameTime + 4);
-			return true;
-		} else if (beans[15].isHint(pointX, pointY) && !beans[15].isEmpty) {
-			// 退出游戏
-			if (rectListener != null) {
-				beans[15].dr = new CardDrawable(getContext(), R.drawable.exit_1);
-				invalidate();
-				rectListener.onRectClick(EXIT_GAME);
-			}
-		} else if (beans[17].isHint(pointX, pointY) && !beans[17].isEmpty) {
-			// 答案
-			beans[17].setEmpty(false, new CardDrawable(getContext(),
-					R.drawable.answer_1), beans[17].mValue);
-			return true;
-		}
-		return false;
-	}
-
-	public boolean clickShowAnswerRect(int pointX, int pointY) {
-		if (beans[17].isHint(pointX, pointY) && !beans[17].isEmpty) {
-			// ��ʾ��
-			beans[17].setEmpty(false, new CardDrawable(getContext(),
-					R.drawable.answer_0), beans[17].mValue);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * �����ƶ��ĵ������ڵ�λ��, ֻ�ڰ���ʱ��ʼ����
+	 * 判断点击点
 	 * 
 	 * @param pointX
 	 * @param pointY
 	 * @return
 	 */
 	private boolean clickDownSignRect(int pointX, int pointY) {
-		// ���ڼ�������
+		// 点击选择运算符号
 		for (int i = 9; i < 13; i++) {
 			if (beans[i].isHint(pointX, pointY) && !beans[i].isEmpty) {
 				beans[7].setEmpty(false, beans[i].dr, beans[i].mValue);
@@ -557,13 +434,12 @@ public class Game24View extends View {
 			}
 		}
 
-		// �����л���������
+		// 点击底部运算符号，切换运算符号
 		if (beans[7].isHint(pointX, pointY) && !beans[7].isEmpty) {
 			int newValue = (beans[7].mValue + 1) % 4;
 			beans[7].setEmpty(false, beans[9 + newValue].dr, newValue);
 			return true;
 		}
-
 		return false;
 	}
 
@@ -731,6 +607,7 @@ public class Game24View extends View {
 
 	public interface OnRectClickListener {
 		void onRectClick(int flag);
+		void onSizeChanged(int currentHeight);
 	}
 
 	// //////////

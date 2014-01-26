@@ -1,6 +1,7 @@
 
 package com.fzh.game.poker;
 
+import com.fzh.game.tool.RectTables;
 import com.fzh.game.tool.UtilTool;
 import com.fzh.game.view.Game24AnswerView;
 import com.fzh.game.view.Game24View;
@@ -8,25 +9,18 @@ import com.fzh.game.view.GameBottomFrm;
 import com.fzh.game.view.GameMenuPopup;
 import com.fzh.game.view.GameTopFrm;
 import com.fzh.game.view.Game24View.OnRectClickListener;
-
-
-
 //import net.miidipush.SDK.SDKConnector;
 import net.miidiwall.SDK.AdWall;
 import net.miidiwall.SDK.IAdWallShowAppsNotifier;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,9 +39,6 @@ public class MainPokerActivity extends Activity implements OnRectClickListener, 
 
     private Game24View gameView;
     private Game24AnswerView answerView;
-
-    private DisplayMetrics mDisplay;
-
     private GameBottomFrm mBottomFrm;
     private GameTopFrm mTopFrm;
     
@@ -55,13 +46,16 @@ public class MainPokerActivity extends Activity implements OnRectClickListener, 
     GameMenuPopup mGameMenuPopup;
     
     public static boolean mIsMeizu = false;
+    
+    private RectTables mTable;
 
     public void onCreate(Bundle savedInstanceState) {
         isMeizuProduct();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        getDisplay();
-
+        
+        mTable = new RectTables(getResources());
+        // 去掉navigationBar
         View main = LayoutInflater.from(this).inflate(R.layout.main, null);
         main.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         setContentView(main);
@@ -69,10 +63,6 @@ public class MainPokerActivity extends Activity implements OnRectClickListener, 
         inflaterView();
 
         initDomobofferWallManager();
-
-        /*
-         * if (getInt(1) == 1) openAdTip();
-         */
     }
     
     private final void isMeizuProduct() {
@@ -97,12 +87,6 @@ public class MainPokerActivity extends Activity implements OnRectClickListener, 
         AdWall.init(this, MIIDI_PUBLISHER_ID, MIIDI_APP_PASSWORD);
     }
 
-    private void getDisplay() {
-        Resources res = getResources();
-        mDisplay = res.getDisplayMetrics();
-        Log.d("fengzihua", "--" + mDisplay.toString());
-    }
-
     private void inflaterView() {
 
         mTopFrm = (GameTopFrm) findViewById(R.id.topFrm);
@@ -113,8 +97,7 @@ public class MainPokerActivity extends Activity implements OnRectClickListener, 
 
         gameView = (Game24View) findViewById(R.id.gameView);
         gameView.setOnRectClickListener(this);
-        answerView = (Game24AnswerView) findViewById(R.id.answerView);
-        answerView.setOnRectClickListener(this);        
+        answerView = (Game24AnswerView) findViewById(R.id.answerView); 
 
         mGameMenuPopup = new GameMenuPopup(this, mTopFrm.getAnchorView(), this);
     }
@@ -147,6 +130,11 @@ public class MainPokerActivity extends Activity implements OnRectClickListener, 
                 gameView.setTouchable(true);
                 break;
         }
+    }
+    
+    public void onSizeChanged(int currentHeight) {
+        if(mTable != null)
+            mTable.onSizeChanged(currentHeight);
     }
 
     protected void openAdTip() {
@@ -235,8 +223,7 @@ public class MainPokerActivity extends Activity implements OnRectClickListener, 
     }
 
     protected void openGameDescription() {
-        AlertDialog dialog = new AlertDialog.Builder(this).setIcon(
-                R.drawable.icon).setTitle(R.string.game_description_icon)
+        AlertDialog dialog = new AlertDialog.Builder(this).setIcon(null)
                 .setMessage(R.string.game_description).setNegativeButton(
                         R.string.rule_sure, null).create();
         dialog.show();

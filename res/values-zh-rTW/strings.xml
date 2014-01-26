@@ -5,9 +5,9 @@
 	<string name="rule_sure">确定</string>
 	<string name="login_out_cancel">再玩会</string>
 	<string name="login_out_title_tip">是否退出游戏？</string>
-	<string name="game_over_title_tip">敢再来一局么？</string>	
-	<string name="game_over_yes">投降</string>
-	<string name="game_over_again">发牌</string>
+	<string name="game_over_title_tip">再来一局？</string>	
+	<string name="game_over_yes">退出</string>
+	<string name="game_over_again">确定</string>
 	<string name="game_description_icon">规则</string>	
 	<string name="game_description">24点是把4个整数（一般是正整数）通过加减乘除运算，使最后的计算结果是24的一个数学游戏
 　　	可以考验人的智力和数学敏感性。 通常是使用扑克牌来进行游戏的，一副牌中抽去大小王后还剩下52张（如果初练也可只用1～10这40张牌），
@@ -40,4 +40,13 @@
 	<string name="get_score_menu_label">"获取积分"</string>
 	<string name="use_score_menu_label">"消费积分"</string>
 	<string name="reset_menu_label">"还原"</string>
+	
+	<!-- 底部按钮和顶部按钮，长按提示 -->
+	<string name="exit_app_label">退出游戏</string>
+	<string name="pre_question_label">上一个题目</string>
+	<string name="reset_question_label">还原题目</string>
+	<string name="next_question_label">下一个题目</string>
+	<string name="answer_question_label">答案</string>
+	<string name="get_score_label">支持开发者</string>
+	<string name="setting_label">更多</string>
 </resources>

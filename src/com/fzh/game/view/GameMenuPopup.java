@@ -25,8 +25,11 @@ public class GameMenuPopup extends PopupWindow {
     private View testOther;
     private View description;
     
+    private Context mContext;
+    
     public GameMenuPopup(Context context, View anchorView, OnClickListener l) {
         super(context);
+        mContext = context;
         setFocusable(true);
         main = LayoutInflater.from(context).inflate(R.layout.more_menu, null);
         setContentView(main);
@@ -47,10 +50,10 @@ public class GameMenuPopup extends PopupWindow {
     }
 
     public void show() {
-        setWidth(600);
+        setWidth(mContext.getResources().getDimensionPixelSize(R.dimen.more_menu_width));
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         setInputMethodMode(ListPopupWindow.INPUT_METHOD_NOT_NEEDED);
-        showAsDropDown(mAnchorView, 0, 18);
+        showAsDropDown(mAnchorView, 0, mContext.getResources().getDimensionPixelSize(R.dimen.more_menu_offy));
     }
     
     public void dismiss() {
